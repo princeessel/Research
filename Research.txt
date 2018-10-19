@@ -1,0 +1,93 @@
+1)what is cold start in Android?
+
+If you run into trouble, and things seem a bit "off," one common fix is to perform a "cold start." 
+A cold start forces certain settings within the app to reset, potentially helping to alleviate the problem.
+
+2)what are 9-patch images and list examples of them
+
+A 9-Patch is a special kind of PNG image, the Android operating system reads the borders of these images to 
+understand how to stretch the image itself and the content within the image such as text (imagine setting 
+a background image with text over top, this is a very common use). 
+
+3)what are svg images and how do we support themin android
+Scalable Vector Graphics (SVG) that is a XML-based vector image format for two-dimensional graphics with support
+for interactivity and animation. The SVG specification is an open standard developed by the World Wide Web Consortium 
+( W3C ) since 1999.
+
+4)what are the process priorites in android ? who lives and who dies
+
+Foreground Processes - Any process hosting a service bound to the foreground activity is given the same foreground priority.
+Visible Processes - the visible part of the activity.
+Service Processes - typical for many apps that are doing background processing (say, loading data) without the immediacy that
+comes with being a foreground service.
+Background Processes - the user just hit the home button causing your onStop() to be called, your process will 
+fall into the background process category.
+Empty Processes - no active components and, as far as Android is concerned these can be killed at any point
+
+5) 
+startService()
+A service is started when an application component, such as an activity, starts it by calling startService().
+Once started, a service can run in the background indefinitely, even if the component that started it is dstroyed.
+BindService()
+A service is bound when an application component binds to it by calling bindService(). A bound service offers 
+a client-server interface that allows components to interact with the service, send requests, get results, and
+ even do so across processes with interprocess communication (IPC).
+Foreground
+A foreground service performs some operation that is noticeable to the user. For example, an audio app would use a 
+foreground service to play an audio track. Foreground services must display a Notification. Foreground services
+ continue running even when the user isn't interacting with the app. 
+Background
+A background service performs an operation that isn't directly noticed by the user. For example, if an app
+ used a service to compact its storage, that would usually be a background service. 
+Note: If your app targets API level 26 or higher, the system imposes restrictions on running background
+ services when the app itself isn't in the foreground. In most cases like this, your app should use a scheduled job instead. 
+ 
+6) 
+Service
+This is the base class for all services. When you extend this class, it’s important that you create a new thread in 
+which to do all the service’s work, because the service uses your application’s main thread, by default, which could 
+slow the performance of any activity your application is running.
+IntentService
+This is a subclass of Service that uses a worker thread to handle all start requests, one at a time. This is the best 
+option if you don’t require that your service handle multiple requests simultaneously. All you need to do is implement
+ onHandleIntent(), which receives the intent for each start request so you can do the background work.
+Below are some key differences between Service and IntentService in Android.
+When to use?
+The Service can be used in tasks with no UI, but shouldn’t be too long. If you need to perform long tasks, you must use
+ threads within Service.
+The IntentService can be used in long tasks usually with no communication to Main Thread. If communication is required, 
+can use Main Thread handler or broadcast intents. Another case of use is when callbacks are needed (Intent triggered tasks).
+How to trigger?
+The Service is triggered calling to method startService().
+The IntentService is triggered using an Intent, it spawns a new worker thread and the method onHandleIntent() is called on this thread.
+Triggered From
+The Service and IntentService may be triggered from any thread, activity or other application component.
+Runs On
+The Service runs in background but it runs on the Main Thread of the application.
+The IntentService runs on a separate worker thread.
+Limitations / Drawbacks
+The Service may block the Main Thread of the application.
+The IntentService cannot run tasks in parallel. Hence all the consecutive intents will go into the message queue for the worker
+ thread and will execute sequentially.
+When to stop?
+If you implement a Service, it is your responsibility to stop the service when its work is done, by calling stopSelf() 
+or stopService(). (If you only want to provide binding, you don’t need to implement this method).
+The IntentService stops the service after all start requests have been handled, so you never have to call stopSelf().
+
+7)
+Helper for processing work that has been enqueued for a job/service. When running on Android O or later, 
+the work will be dispatched as a job via JobScheduler.enqueue.
+ When running on older versions of the platform, it will use Context.startService. 
+
+8)
+This class provides access to the system alarm services. These allow you to schedule your application to be run 
+at some point in the future. When an alarm goes off, the Intent that had been registered for it is broadcast
+ by the system, automatically starting the target application if it is not already running. Registered alarms 
+are retained while the device is asleep (and can optionally wake the device up if they go off during that time), 
+but will be cleared if it is turned off and rebooted.
+Job Scheduler
+This is an API for scheduling various types of jobs against the framework that will be executed in your application's own process.
+
+9)
+Doze Mode focuses on improving battery life on Android by cutting down on background network activity when the device is not in use.  
+
